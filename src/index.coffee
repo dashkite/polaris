@@ -31,7 +31,7 @@ text = Parse.pipe [
 ]
 
 expression = Parse.pipe [
-  Parse.between start, end, Parse.many expressionSymbol
+  Parse.between [ start, end ], Parse.many expressionSymbol
   Parse.cat
   Parse.trim
   Parse.tag "expression"
