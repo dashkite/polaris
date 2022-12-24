@@ -1,6 +1,7 @@
 import * as Parse from "@dashkite/parse"
 import * as Fn from "@dashkite/joy/function"
 import * as Type from "@dashkite/joy/type"
+import * as Val from "@dashkite/joy/value"
 import { generic } from "@dashkite/joy/generic"
 import JSONQuery from "json-query"
 
@@ -74,11 +75,15 @@ generic expand, Type.isArray, Type.isDefined, ( array, context ) ->
 generic expand, Type.isString, Type.isDefined, ( text, context ) -> 
   result = null
   parse text
-  .map ( block ) ->
-    if block.text?
-      block.text
-    else
-      query block.expression, context
-  .reduce concatenate, null
+    .map ( block ) ->
+      if block.text?
+        block.text
+      else
+        query block.expression, context
+    .reduce concatenate, null
+
+generic expand, Val.isEmpty, Type.isDefined, ( text ) -> text
+
+generic expand, Type.isUndefined, Type.isDefined, -> null
 
 export { expand, parse, query }

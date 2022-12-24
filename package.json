@@ -12,6 +12,7 @@
       "node": "./build/node/src/*.js"
     }
   },
+  "files": [ "build/node/src" ],
   "scripts": {
     "test": "genie test"
   },
