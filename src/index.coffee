@@ -72,13 +72,16 @@ generic expand, Type.isArray, Type.isObject, ( array, context ) ->
   expand value, context for value in array
 
 generic expand, Type.isString, Type.isObject, ( text, context ) -> 
-  result = null
-  parse text
-  .map ( block ) ->
-    if block.text?
-      block.text
-    else
-      query block.expression, context
-  .reduce concatenate, null
+  if text? && text != ""
+    result = null
+    parse text
+    .map ( block ) ->
+      if block.text?
+        block.text
+      else
+        query block.expression, context
+    .reduce concatenate, null
+  else
+    ""
 
 export { expand, parse, query }

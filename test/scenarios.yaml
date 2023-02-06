@@ -5,3 +5,4 @@
 - ${ greetings[ { name \} ] } ${ name }
 - greeting:
     morning: Good morning, ${ name }
+- ""
