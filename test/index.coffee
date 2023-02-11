@@ -10,5 +10,6 @@ import data from "./data"
 do ->
   print await test "@dashkite/polaris", ->
     actual = expand scenarios, data
+    console.log actual
     assert.deepEqual actual, expected
     

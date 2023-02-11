@@ -1,3 +1,9 @@
 name: Alice
 greetings:
   Alice: Hello
+nested:
+  -
+    - property: foo
+    - property: bar
+  -
+    - property: baz
