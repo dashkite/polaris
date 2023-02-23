@@ -60,18 +60,43 @@ collate = ( context ) ->
     result[ key ] = expand value, context
     result
 
+Cache = do ( cache = new Map ) ->
+
+  get: ({ value, context }) ->
+    if cache.has value
+      subcache = cache.get value
+      if subcache.has context
+        subcache.get context
+
+  put: ({ value, context, result }) ->
+    subcache = undefined
+    if cache.has value
+      subcache = cache.get value
+    else
+      subcache = new Map
+      cache.set value, subcache
+    subcache.set context, result
+    result
+
+cache = ( f ) ->
+  ( value, context ) ->
+    if ( result = Cache.get { value, context } )?
+      result
+    else
+      Cache.put { value, context, result: f value, context }
+
 expand = generic 
   name: "expand"
   default: Fn.identity
 
-generic expand, Type.isObject, Type.isObject, ( object, context ) ->
+generic expand, Type.isObject, Type.isObject, cache ( object, context ) ->
   Object.entries object
     .reduce ( collate context ), {}
 
-generic expand, Type.isArray, Type.isObject, ( array, context ) ->
+generic expand, Type.isArray, Type.isObject, cache ( array, context ) ->
   expand value, context for value in array
 
-generic expand, Type.isString, Type.isObject, ( text, context ) -> 
+generic expand, Type.isString, Type.isObject, cache ( text, context ) -> 
   if text? && text != ""
     result = null
     parse text

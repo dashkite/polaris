@@ -1,0 +1,253 @@
+name: Accounts API
+
+
+resources:
+
+  account:
+    template: /accounts/{account}
+    methods:
+      get:
+        response:
+          content-type: [ application/json ]
+          status: [ 200 ]
+
+      put:
+        request:
+          content-type: [ application/json ]
+        response:
+          content-type: [ application/json ]
+          status: [ 200 ]
+
+      delete:
+        response:
+          content-type: [ application/json ]
+          status: [ 200 ]
+
+  account-query:
+    template: /accounts-query?{email}
+    methods:
+      get:
+        response:
+          content-type: [ application/json ]
+          status: [ 200, 404 ]
+
+  accounts:
+    template: /accounts
+    methods:
+      post:
+        request:
+          content-type: [ application/json ]
+        response:
+          content-type: [ application/json ]
+          status: [ 201 ]
+            
+  billing:
+    template: /pages/{workspace}/billing
+    methods:
+      post:
+        response:
+          content-type: [ text/plain ]
+          status: [ 200 ]
+
+  checkout:
+    template: /pages/{workspace}/checkout
+    methods:
+      post:
+        request:
+          content-type: [ application/json ]
+        response:
+          content-type: [ text/plain ]
+          status: [ 200 ]
+
+  description:
+    template: /
+    methods:
+      get:
+        response:
+          content-type: [ application/json ]
+          status: [ 200 ]
+
+  plan:
+    template: /plans/{plan}
+    methods:
+      get:
+        response:
+          content-type: [ application/json ]
+          status: [ 200 ]
+
+  product:
+    template: /products/{product}
+    methods:
+      get:
+        response:
+          content-type: [ application/json ]
+          status: [ 200 ]
+
+  products:
+    template: /products
+    methods:
+      get:
+        response:
+          content-type: [ application/json ]
+          status: [ 200 ]
+
+  subscription:
+    template: /workspaces/{workspace}/subscriptions/{product}
+    methods:
+      get:
+        response:
+          content-type: [ application/json ]
+          status: [ 200 ]
+
+  subscriptions:
+    template: /workspaces/{workspace}/subscriptions
+    methods:
+      get:
+        response:
+          content-type: [ application/json ]
+          status: [ 200 ]
+
+  subscription-metadata:
+    template: /workspaces/{workspace}/subscriptions/{product}/metadata
+    methods:
+      get:
+        response:
+          content-type: [ application/json ]
+          status: [ 200 ]
+
+      put:
+        request:
+          content-type: [ application/json ]
+        response:
+          content-type: [ application/json ]
+          status: [ 200 ]
+
+      delete:
+        response:
+          status: [ 204 ]
+
+  webhook-stripe:
+    template: /webhooks/stripe
+    methods:
+      post:
+        request:
+          content-type: [ application/json ]
+        response:
+          status: [ 200 ]
+
+  workspace:
+    template: /workspaces/{workspace}
+    methods:
+      get:
+        response:
+          content-type: [ application/json ]
+          status: [ 200 ]
+      put:
+        request:
+          content-type: [ application/json ]
+        response:
+          content-type: [ application/json ]
+          status: [ 200 ]
+
+      delete:
+        response:
+          status: [ 204 ]
+
+  workspace-accounts:
+    template: /workspaces/{workspace}/accounts
+    methods:
+      get:
+        response:
+          content-type: [ application/json ]
+          status: [ 200 ]
+
+  workspace-invites:
+    template: /workspaces/{workspace}/invites
+    methods:
+      get:
+        response:
+          content-type: [ application/json ]
+          status: [ 200 ]
+
+      post:
+        request:
+          content-type: [ application/json ]
+        response:
+          content-type: [ application/json ]
+          status: [ 201 ]
+
+  workspace-invite-accept:
+    template: /workspaces/{workspace}/invites/{account}/accept
+    methods:
+      post:
+        response:
+          content-type: [ application/json ]
+          status: [ 201 ]
+
+  workspace-account:
+    template: /workspaces/{workspace}/accounts/{account}
+    methods:
+      get:
+        response:
+          content-type: [ application/json ]
+          status: [ 200 ]
+
+      put:
+        request:
+          content-type: [ application/json ]
+        response:
+          content-type: [ application/json ]
+          status: [ 200 ]
+
+      delete:
+        response:
+          status: [ 204 ]
+
+  workspace-invite:
+    template: /workspaces/{workspace}/invites/{email}
+    methods:
+      get:
+        response:
+          content-type: [ application/json ]
+          status: [ 200 ]
+
+      put:
+        request:
+          content-type: [ application/json ]
+        response:
+          content-type: [ application/json ]
+          status: [ 200 ]
+
+      delete:
+        response:
+          status: [ 204 ]
+
+  account-workspaces:
+    template: /accounts/{account}/workspaces?{role?}
+    methods:
+      get:
+        response:
+          content-type: [ application/json ]
+          status: [ 200 ]
+
+      post:
+        request:
+          content-type: [ application/json ]
+        response:
+          content-type: [ application/json ]
+          status: [ 201 ]
+    
+  account-workspace-leave:
+    template: /accounts/{account}/workspaces/{workspace}/leave
+    methods:
+      post:
+        response:
+          status: [ 204 ]
+
+  account-workspace-invites:
+    template: /accounts/{account}/workspaces/invites
+    methods:
+      get:
+        response:
+          content-type: [ application/json ]
+          status: [ 200 ]
