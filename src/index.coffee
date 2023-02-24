@@ -99,14 +99,14 @@ expand = generic
   name: "expand"
   default: Fn.identity
 
-generic expand, Type.isObject, Type.isObject, cache ( object, context ) ->
+generic expand, Type.isObject, Type.isObject, ( object, context ) ->
   Object.entries object
     .reduce ( collate context ), {}
 
-generic expand, Type.isArray, Type.isObject, cache ( array, context ) ->
+generic expand, Type.isArray, Type.isObject, ( array, context ) ->
   expand value, context for value in array
 
-generic expand, Type.isString, Type.isObject, cache ( text, context ) -> 
+generic expand, Type.isString, Type.isObject, ( text, context ) -> 
   if text? && text != ""
     result = null
     parse text
