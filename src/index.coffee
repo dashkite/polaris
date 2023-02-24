@@ -63,10 +63,13 @@ collate = ( context ) ->
     result
 
 hash = ( value ) ->
-  Crypto
-    .createHash "md5"
-    .update JSON.stringify value
-    .digest "hex"
+  if Type.isString value
+    value
+  else
+    Crypto
+      .createHash "md5"
+      .update JSON.stringify value
+      .digest "hex"
 
 Cache = do ( cache = new Map, max = 100000 ) ->
 
@@ -99,14 +102,14 @@ expand = generic
   name: "expand"
   default: Fn.identity
 
-generic expand, Type.isObject, Type.isObject, ( object, context ) ->
+generic expand, Type.isObject, Type.isObject, cache ( object, context ) ->
   Object.entries object
     .reduce ( collate context ), {}
 
-generic expand, Type.isArray, Type.isObject, ( array, context ) ->
+generic expand, Type.isArray, Type.isObject, cache ( array, context ) ->
   expand value, context for value in array
 
-generic expand, Type.isString, Type.isObject, ( text, context ) -> 
+generic expand, Type.isString, Type.isObject, cache ( text, context ) -> 
   if text? && text != ""
     result = null
     parse text

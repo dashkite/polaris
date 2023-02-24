@@ -21,6 +21,7 @@ do ->
     test "benchmark", ->
       ms = Time.benchmark ->
         expand [ api, api, api ], { data..., api }
+      console.log benchark: ms
       assert ms < 15
       assert.deepEqual [ api, api, api ],
         expand [ api, api, api ], { data..., api }
