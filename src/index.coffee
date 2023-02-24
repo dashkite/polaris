@@ -1,3 +1,5 @@
+import Crypto from "node:crypto"
+
 import * as Parse from "@dashkite/parse"
 import * as Fn from "@dashkite/joy/function"
 import * as Type from "@dashkite/joy/type"
@@ -60,30 +62,37 @@ collate = ( context ) ->
     result[ key ] = expand value, context
     result
 
-Cache = do ( cache = new Map ) ->
+hash = ( value ) ->
+  Crypto
+    .createHash "md5"
+    .update JSON.stringify value
+    .digest "hex"
 
-  get: ({ value, context }) ->
-    if cache.has value
-      subcache = cache.get value
-      if subcache.has context
-        subcache.get context
+Cache = do ( cache = new Map, max = 100000 ) ->
 
-  put: ({ value, context, result }) ->
-    subcache = undefined
-    if cache.has value
-      subcache = cache.get value
-    else
-      subcache = new Map
-      cache.set value, subcache
-    subcache.set context, result
-    result
+  get: ( key ) ->
+    if ( result = cache.get key )?
+      # refresh key
+      cache.delete key
+      cache.set key
+  
+  set: ( key, value ) ->
+    # refresh key
+    if ( cache.get key )?
+      cache.delete key
+    else if cache.size > max
+      cache.delete cache.keys().next().value
+    cache.set key, value
 
 cache = ( f ) ->
   ( value, context ) ->
-    if ( result = Cache.get { value, context } )?
+    key = hash { value, context }
+    if ( result = Cache.get key)?
       result
     else
-      Cache.put { value, context, result: f value, context }
+      result = f value, context
+      Cache.set key, result
+      result
 
 expand = generic 
   name: "expand"
