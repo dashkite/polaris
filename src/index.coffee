@@ -75,6 +75,7 @@ Cache = do ( cache = new Map, max = 100000 ) ->
       # refresh key
       cache.delete key
       cache.set key
+      result
   
   set: ( key, value ) ->
     # refresh key
