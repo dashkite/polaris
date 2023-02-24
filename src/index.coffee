@@ -80,7 +80,7 @@ Cache = do ( cache = new Map, max = 100000 ) ->
     # refresh key
     if ( cache.get key )?
       cache.delete key
-    else if cache.size > max
+    else if cache.size == max
       cache.delete cache.keys().next().value
     cache.set key, value
 
