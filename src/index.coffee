@@ -63,13 +63,14 @@ collate = ( context ) ->
     result
 
 hash = ( value ) ->
-  if Type.isString value
-    value
-  else
-    Crypto
-      .createHash "md5"
-      .update JSON.stringify value
-      .digest "hex"
+  Crypto
+    .createHash "sha1"
+    .update do ->
+      if Type.isString value
+        value
+      else
+        JSON.stringify value
+    .digest "base64"
 
 Cache = do ( cache = new Map, max = 100000 ) ->
 
