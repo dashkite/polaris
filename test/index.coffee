@@ -19,7 +19,10 @@ do ->
       assert.deepEqual actual, expected
 
     test "benchmark", ->
-      console.log Time.benchmark ->
+      ms = Time.benchmark ->
+        expand [ api, api, api ], { data..., api }
+      assert ms < 15
+      assert.deepEqual [ api, api, api ],
         expand [ api, api, api ], { data..., api }
   ]
 
