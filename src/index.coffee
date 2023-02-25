@@ -41,14 +41,19 @@ parseStart = ( state, c ) ->
       state.blocks.push state.current
       state.current = ""
     else
+      state.mode = "text"
       state.current += "$#{c}"
 
 parse = ( text ) ->
+
+  # initalize parser state
   state =
     mode: "text"
     blocks: []
     expressions: []
     current: ""
+
+  # parse each character
   for c in text
     switch state.mode
       when "text"
@@ -59,14 +64,21 @@ parse = ( text ) ->
         parseExpression state, c
       when "start"
         parseStart state, c
-   if state.mode == "text"
-     if state.current != ""
-       state.blocks.push state.current
-     for block, i in state.blocks
-       if ( expression = state.expressions[ i ] )?
-         [ block, state.expressions[ i ] ]
-       else [ block ]
-   else [ text ]
+
+  # return result
+  if state.mode == "text"
+    # push the final block unless it's empty
+    if state.current != ""
+      state.blocks.push state.current
+    for block, i in state.blocks
+      if ( expression = state.expressions[ i ] )?
+        [ block, state.expressions[ i ] ]
+      # there's no corresponding expression 
+      # so this is just the closing block
+      else [ block ]
+  # there was a parse error so we just assume this wasn't
+  # an polaris template - maybe we should throw?
+  else [ text ]
     
 query = ( expression, data ) ->
   ( JSONQuery expression, { data } )?.value
