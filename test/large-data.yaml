@@ -1,0 +1,1915 @@
+request:
+  domain: workspaces.dashkite.io
+  lambda: accounts-development-api
+  resource:
+    name: description
+  method: get
+  headers:
+    accept:
+      - application/json
+  target: /
+  url: https://workspaces.dashkite.io/
+  authorization: []
+registry:
+  policies:
+    invalidations:
+      title: DashKite Guardian Invalidation Policies
+      policies:
+        - response:
+            - conditions:
+                - name: domain
+                  value: workspaces.dashkite.io
+                - name: resource
+                  value:
+                    - account
+                - name: method
+                  value:
+                    - put
+                    - delete
+              actions:
+                - name: invalidate
+                  value:
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: account
+                        bindings:
+                          account: ${ request.resource.bindings.account }
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: account-query
+                        bindings:
+                          email: ${ response.content.email }
+            - conditions:
+                - name: domain
+                  value: workspaces.dashkite.io
+                - name: resource
+                  value:
+                    - account
+                - name: method
+                  value:
+                    - delete
+              context:
+                - name: workspaces
+                  action:
+                    name: request
+                    value:
+                      domain: workspaces.dashkite.io
+                      method: get
+                      resource:
+                        name: account-workspaces
+                        bindings:
+                          account: ${ request.resource.bindings.account }
+              actions:
+                - name: invalidate
+                  value:
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: workspace-account
+                        bindings:
+                          account: ${ request.resource.bindings.account }
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: account-workspaces
+                        bindings:
+                          account: ${ request.resource.bindings.account }
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: account-workspace-invites
+                        bindings:
+                          account: ${ request.resource.bindings.account }
+                - name: map
+                  value:
+                    from: ${ workspaces }
+                    each: workspace
+                    action:
+                      name: invalidate
+                      value:
+                        - domain: workspaces.dashkite.io
+                          resource:
+                            name: workspace-accounts
+                            bindings:
+                              workspace: \${ workspace }
+                        - domain: workspaces.dashkite.io
+                          resource:
+                            name: workspace
+                            bindings:
+                              workspace: \${ workspace }
+            - conditions:
+                - name: domain
+                  value: workspaces.dashkite.io
+                - name: resource
+                  value:
+                    - workspace
+                - name: method
+                  value:
+                    - delete
+              context:
+                - name: accounts
+                  action:
+                    name: request
+                    value:
+                      domain: workspaces.dashkite.io
+                      method: get
+                      resource:
+                        name: workspace-accounts
+                        bindings:
+                          workspace: ${ request.resource.bindings.workspace }
+              actions:
+                - name: invalidate
+                  value:
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: workspace-account
+                        bindings:
+                          workspace: ${ request.resource.bindings.workspace }
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: workspace-accounts
+                        bindings:
+                          workspace: ${ request.resource.bindings.workspace }
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: workspace-invites
+                        bindings:
+                          workspace: ${ request.resource.bindings.workspace }
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: workspace
+                        bindings:
+                          workspace: ${ request.resource.bindings.workspace }
+                - name: map
+                  value:
+                    from: ${ accounts }
+                    each: account
+                    action:
+                      name: invalidate
+                      value:
+                        - domain: workspaces.dashkite.io
+                          resource:
+                            name: account-workspaces
+                            bindings:
+                              account: \${ account.address }
+            - conditions:
+                - name: domain
+                  value: workspaces.dashkite.io
+                - name: resource
+                  value:
+                    - workspace
+                - name: method
+                  value:
+                    - put
+              actions:
+                - name: invalidate
+                  value:
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: workspace
+                        bindings:
+                          workspace: ${ request.resource.bindings.workspace }
+            - conditions:
+                - name: domain
+                  value: workspaces.dashkite.io
+                - name: resource
+                  value:
+                    - workspace-account
+                - name: method
+                  value:
+                    - put
+                    - delete
+              actions:
+                - name: invalidate
+                  value:
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: workspace-account
+                        bindings:
+                          account: ${ request.resource.bindings.account }
+                          workspace: ${ request.resource.bindings.workspace }
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: workspace-accounts
+                        bindings:
+                          workspace: ${ request.resource.bindings.workspace }
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: account-workspaces
+                        bindings:
+                          account: ${ request.resource.bindings.account }
+            - conditions:
+                - name: domain
+                  value: workspaces.dashkite.io
+                - name: resource
+                  value:
+                    - account-workspaces
+                - name: method
+                  value:
+                    - post
+              actions:
+                - name: invalidate
+                  value:
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: account-workspaces
+                        bindings:
+                          account: ${ request.resource.bindings.account }
+            - conditions:
+                - name: domain
+                  value: workspaces.dashkite.io
+                - name: resource
+                  value:
+                    - workspace-invite
+                - name: method
+                  value:
+                    - put
+                    - delete
+              actions:
+                - name: invalidate
+                  value:
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: workspace-invites
+                        bindings:
+                          workspace: ${ request.resource.bindings.workspace }
+            - conditions:
+                - name: domain
+                  value: workspaces.dashkite.io
+                - name: resource
+                  value:
+                    - workspace-invite
+                - name: method
+                  value:
+                    - delete
+              context:
+                - name: account
+                  action:
+                    name: request
+                    value:
+                      domain: workspaces.dashkite.io
+                      method: get
+                      resource:
+                        name: account-query
+                        bindings:
+                          email: ${ request.resource.bindings.email }
+              actions:
+                - name: invalidate
+                  value:
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: account-workspace-invites
+                        bindings:
+                          account: ${ account.address }
+            - conditions:
+                - name: domain
+                  value: workspaces.dashkite.io
+                - name: resource
+                  value:
+                    - workspace-invite-accept
+                - name: method
+                  value:
+                    - post
+              actions:
+                - name: invalidate
+                  value:
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: account-workspace-invites
+                        bindings:
+                          account: ${ request.resource.bindings.account }
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: account-workspaces
+                        bindings:
+                          account: ${ request.resource.bindings.account }
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: workspace-invites
+                        bindings:
+                          workspace: ${ request.resource.bindings.workspace }
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: workspace-accounts
+                        bindings:
+                          workspace: ${ request.resource.bindings.workspace }
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: workspace
+                        bindings:
+                          workspace: ${ request.resource.bindings.workspace }
+            - conditions:
+                - name: domain
+                  value: workspaces.dashkite.io
+                - name: resource
+                  value:
+                    - account-workspace-leave
+                - name: method
+                  value:
+                    - post
+              actions:
+                - name: invalidate
+                  value:
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: workspace-account
+                        bindings:
+                          account: ${ request.resource.bindings.account }
+                          workspace: ${ request.resource.bindings.workspace }
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: workspace-accounts
+                        bindings:
+                          workspace: ${ request.resource.bindings.workspace }
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: account-workspaces
+                        bindings:
+                          account: ${ request.resource.bindings.account }
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: workspace
+                        bindings:
+                          workspace: ${ request.resource.bindings.workspace }
+            - conditions:
+                - name: domain
+                  value: workspaces.dashkite.io
+                - name: resource
+                  value:
+                    - workspace-invites
+                - name: method
+                  value:
+                    - post
+              actions:
+                - name: invalidate
+                  value:
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: workspace-invites
+                        bindings:
+                          workspace: ${ request.resource.bindings.workspace }
+            - conditions:
+                - name: domain
+                  value: workspaces.dashkite.io
+                - name: resource
+                  value:
+                    - webhook-stripe
+                - name: method
+                  value:
+                    - post
+                - name: equal
+                  value:
+                    - ${ request.content.type }
+                    - customer.subscription.updated
+              actions:
+                - name: invalidate
+                  value:
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: subscription
+                        bindings:
+                          workspace: ${ request.content.data.object.metadata.workspace }
+                          product: ${ request.content.data.object.items.data[0].price.metadata.byname }
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: subscriptions
+                        bindings:
+                          workspace: ${ request.content.data.object.metadata.workspace }
+            - conditions:
+                - name: domain
+                  value: workspaces.dashkite.io
+                - name: resource
+                  value:
+                    - webhook-stripe
+                - name: method
+                  value:
+                    - post
+                - name: equal
+                  value:
+                    - ${ request.content.type }
+                    - checkout.session.completed
+              actions:
+                - name: invalidate
+                  value:
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: subscriptions
+                        bindings:
+                          workspace: ${ request.content.data.object.client_reference_id }
+            - conditions:
+                - name: domain
+                  value: workspaces.dashkite.io
+                - name: resource
+                  value:
+                    - webhook-stripe
+                - name: method
+                  value:
+                    - post
+                - name: equal
+                  value:
+                    - ${ request.content.type }
+                    - customer.subscription.deleted
+              actions:
+                - name: invalidate
+                  value:
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: subscription
+                        bindings:
+                          workspace: ${ request.content.data.object.metadata.workspace }
+                          product: ${ request.content.data.object.items.data[0].price.metadata.byname }
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: subscriptions
+                        bindings:
+                          workspace: ${ request.content.data.object.metadata.workspace }
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: subscription-metadata
+                        bindings:
+                          workspace: ${ request.content.data.object.metadata.workspace }
+                          product: ${ request.content.data.object.items.data[0].price.metadata.byname }
+            - conditions:
+                - name: domain
+                  value: workspaces.dashkite.io
+                - name: resource
+                  value:
+                    - subscription-metadata
+                - name: method
+                  value:
+                    - put
+                    - delete
+              actions:
+                - name: invalidate
+                  value:
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: subscription-metadata
+                        bindings:
+                          workspace: ${ request.resource.bindings.workspace }
+                          product: ${ request.resource.bindings.product }
+                    - domain: workspaces.dashkite.io
+                      resource:
+                        name: subscription
+                        bindings:
+                          workspace: ${ request.resource.bindings.workspace }
+                          product: ${ request.resource.bindings.product }
+            - conditions:
+                - name: domain
+                  value: db.dashkite.io
+                - name: resource
+                  value:
+                    - db
+                - name: method
+                  value:
+                    - put
+                    - delete
+              actions:
+                - name: invalidate
+                  value:
+                    - domain: db.dashkite.io
+                      resource:
+                        name: db
+                        bindings:
+                          db: ${ request.resource.bindings.db }
+            - conditions:
+                - name: domain
+                  value: db.dashkite.io
+                - name: resource
+                  value:
+                    - collection
+                - name: method
+                  value:
+                    - put
+                    - delete
+              actions:
+                - name: invalidate
+                  value:
+                    - domain: db.dashkite.io
+                      resource:
+                        name: collection
+                        bindings:
+                          db: ${ request.resource.bindings.db }
+                          collection: ${ request.resource.bindings.collection }
+                    - domain: db.dashkite.io
+                      resource:
+                        name: collections
+                        bindings:
+                          db: ${ request.resource.bindings.db }
+            - conditions:
+                - name: domain
+                  value: db.dashkite.io
+                - name: resource
+                  value:
+                    - entry
+                - name: method
+                  value:
+                    - put
+                    - delete
+              actions:
+                - name: invalidate
+                  value:
+                    - domain: db.dashkite.io
+                      resource:
+                        name: entry
+                        bindings:
+                          db: ${ request.resource.bindings.db }
+                          collection: ${ request.resource.bindings.collection }
+                          entry: ${ request.resource.bindings.entry }
+            - conditions:
+                - name: domain
+                  value: db.dashkite.io
+                - name: resource
+                  value:
+                    - collections
+                - name: method
+                  value:
+                    - post
+              actions:
+                - name: invalidate
+                  value:
+                    - domain: db.dashkite.io
+                      resource:
+                        name: collections
+                        bindings:
+                          db: ${ request.resource.bindings.db }
+            - conditions:
+                - name: domain
+                  value: db.dashkite.io
+                - name: resource
+                  value:
+                    - collection indices
+                - name: method
+                  value:
+                    - post
+              actions:
+                - name: invalidate
+                  value:
+                    - domain: db.dashkite.io
+                      resource:
+                        name: collection indices
+                        bindings:
+                          db: ${ request.resource.bindings.db }
+                          collection: ${ request.resource.bindings.collection }
+            - conditions:
+                - name: domain
+                  value: db.dashkite.io
+                - name: resource
+                  value:
+                    - collection index
+                    - collection
+                - name: method
+                  value:
+                    - delete
+              actions:
+                - name: invalidate
+                  value:
+                    - domain: db.dashkite.io
+                      resource:
+                        name: collection indices
+                        bindings:
+                          db: ${ request.resource.bindings.db }
+                          collection: ${ request.resource.bindings.collection }
+                    - domain: db.dashkite.io
+                      resource:
+                        name: collection index
+                        bindings:
+                          db: ${ request.resource.bindings.db }
+                          collection: ${ request.resource.bindings.collection }
+                          key: ${ request.resource.bindings.key }
+                          sort: ${ request.resource.bindings.sort }
+  runes:
+    db:
+      domain: db.dashkite.io
+      expires:
+        days: 30
+      identity: ${ email }
+      resolvers:
+        account:
+          action:
+            name: request
+            value:
+              domain: workspaces.dashkite.io
+              method: get
+              resource:
+                name: account-query
+                bindings:
+                  email: ${ email }
+        workspaces:
+          requires:
+            - account
+          action:
+            name: request
+            value:
+              domain: workspaces.dashkite.io
+              method: get
+              resource:
+                name: account-workspaces
+                bindings:
+                  account: \${ account.address }
+        workspace-dbs:
+          requires:
+            - workspaces
+          action:
+            name: map
+            value:
+              from: \${ workspaces }
+              each: workspace
+              action:
+                name: request
+                value:
+                  domain: workspaces.dashkite.io
+                  method: get
+                  resource:
+                    name: subscription-metadata
+                    bindings:
+                      workspace: \\\${ workspace }
+                      product: db
+      grants:
+        - resources:
+            exclude:
+              - db create
+              - description
+          resolvers:
+            - workspace-dbs
+          any:
+            from: \${ workspace-dbs[*].addresses }
+            each: db
+            bindings:
+              db: \${ db }
+          methods:
+            - get
+            - put
+            - delete
+            - post
+    ephemeral:
+      domain: guardian.dashkite.io
+      expires:
+        minutes: 10
+      grants:
+        - resources:
+            - authenticate
+          bindings:
+            hash: ${ hash }
+          methods:
+            - post
+    workspaces:
+      domain: workspaces.dashkite.io
+      expires:
+        days: 30
+      identity: ${ email }
+      resolvers:
+        account:
+          action:
+            name: request
+            value:
+              domain: workspaces.dashkite.io
+              method: get
+              resource:
+                name: account-query
+                bindings:
+                  email: ${ email }
+        workspaces:
+          requires:
+            - account
+          action:
+            name: request
+            value:
+              domain: workspaces.dashkite.io
+              method: get
+              resource:
+                name: account-workspaces
+                bindings:
+                  account: \${ account.address }
+        workspace-accounts:
+          requires:
+            - workspaces
+          action:
+            name: map
+            value:
+              from: \${ workspaces }
+              each: workspace
+              action:
+                name: request
+                value:
+                  domain: workspaces.dashkite.io
+                  method: get
+                  resource:
+                    name: workspace-accounts
+                    bindings:
+                      workspace: \\\${ workspace }
+        admin-level-workspaces:
+          requires:
+            - account
+          action:
+            name: request
+            value:
+              domain: workspaces.dashkite.io
+              method: get
+              resource:
+                name: account-workspaces
+                bindings:
+                  account: \${ account.address }
+                  role: administrator
+        invites:
+          requires:
+            - account
+          action:
+            name: request
+            value:
+              domain: workspaces.dashkite.io
+              method: get
+              resource:
+                name: account-workspace-invites
+                bindings:
+                  account: \${ account.address }
+      grants:
+        - resources:
+            - account-query
+          bindings:
+            email: ${ email }
+          methods:
+            - get
+        - resources:
+            - account-workspaces
+            - account
+            - account-workspace-invites
+            - feedback
+          resolvers:
+            - account
+          bindings:
+            account: \${ account.address }
+          methods:
+            - get
+            - put
+            - delete
+            - post
+        - resources:
+            - account
+          resolvers:
+            - workspace-accounts
+          any:
+            from: \${ workspace-accounts[**][*].address }
+            each: account
+            bindings:
+              account: \${ account }
+          methods:
+            - get
+        - resources:
+            - subscription
+            - subscriptions
+            - workspace-accounts
+            - workspace-account
+            - workspace-invite
+            - workspace-invites
+          resolvers:
+            - workspaces
+          any:
+            from: \${ workspaces }
+            each: workspace
+            bindings:
+              workspace: \${ workspace }
+          methods:
+            - get
+        - resources:
+            - workspace-account
+            - workspace-invite
+            - workspace
+            - workspace-invites
+            - checkout
+            - billing
+          resolvers:
+            - admin-level-workspaces
+          any:
+            from: \${ admin-level-workspaces }
+            each: workspace
+            bindings:
+              workspace: \${ workspace }
+          methods:
+            - put
+            - delete
+            - post
+        - resources:
+            - subscription-metadata
+          resolvers:
+            - workspaces
+          any:
+            from: \${ workspaces }
+            each: workspace
+            bindings:
+              workspace: \${ workspace }
+          methods:
+            - get
+            - put
+            - delete
+        - resources:
+            - workspace
+          resolvers:
+            - workspaces
+          any:
+            from: \${ workspaces }
+            each: workspace
+            bindings:
+              workspace: \${ workspace }
+          methods:
+            - get
+        - resources:
+            - workspace
+          resolvers:
+            - invites
+          any:
+            from: \${ invites }
+            each: workspace
+            bindings:
+              workspace: \${ workspace }
+          methods:
+            - get
+        - resources:
+            - workspace-invite-accept
+          resolvers:
+            - invites
+            - account
+          any:
+            from: \${ invites }
+            each: workspace
+            bindings:
+              workspace: \${ workspace }
+              account: \${ account.address }
+          methods:
+            - post
+        - resources:
+            - account-workspace-leave
+          resolvers:
+            - workspaces
+            - account
+          any:
+            from: \${ workspaces }
+            each: workspace
+            bindings:
+              workspace: \${ workspace }
+              account: \${ account.address }
+          methods:
+            - post
+        - resources:
+            - workspace-invite
+          resolvers:
+            - invites
+          any:
+            from: \${ invites }
+            each: workspace
+            bindings:
+              workspace: \${ workspace }
+              email: ${ email }
+          methods:
+            - get
+            - delete
+response:
+  description: ok
+  headers:
+    access-control-allow-origin:
+      - https://workspaces.dashkite.com
+    cache-control:
+      - max-age=600
+      - s-maxage=600
+    vary:
+      - accept
+    access-control-expose-headers:
+      - credentials
+    age:
+      - 6
+    guardian-cache:
+      - hit
+  content:
+    name: Accounts API
+    schema:
+      workspace:
+        additionalProperties: false
+        type: object
+        required:
+          - address
+          - name
+        properties:
+          name:
+            type: string
+            description: The name for this workspace. Suitable for use withing HX contexts.
+          stripe_customer_id:
+            type: string
+            description: An optional Stripe customer id for this workspace.
+          address:
+            type: string
+            description: The address for this workspace.
+      product:
+        additionalProperties: false
+        type: object
+        required:
+          - plans
+          - byname
+        properties:
+          byname:
+            type: string
+            description: The byname of this product.
+          plans:
+            type: array
+            description: A list of plan addresses for this product.
+            items:
+              type: string
+      subscription:
+        additionalProperties: false
+        type: object
+        required:
+          - product
+          - plan
+          - status
+          - workspace
+          - stripe_id
+          - metadata
+          - address
+          - cancel_at_period_end
+          - current_period_end
+        properties:
+          product:
+            type: string
+            description: The byname of the product for this subscription.
+          workspace:
+            type: string
+            description: The address of the workspace this subscription belongs to.
+          metadata:
+            type: object
+            description: The metadata of this subscription.
+          address:
+            description: The address of this subscription.
+          cancel_at_period_end:
+            type: boolean
+            description: A flag that indicates whether this subscription is set to cancel at the end of the billing period.
+          current_period_end:
+            type: integer
+            description: The end of the current billing period, given as a UNIX timestamp.
+          plan:
+            type: string
+            description: The address of the plan for this subscription.
+          stripe_id:
+            type: string
+            description: The Stripe id for this subscription.
+          status:
+            type: string
+            description: The status of this subscription.
+      invite:
+        additionalProperties: false
+        type: object
+        required:
+          - email
+          - role
+          - sender
+        properties:
+          sender:
+            type: string
+            format: email
+            description: The email of the account that sent this invite.
+          email:
+            type: string
+            format: email
+            description: The email of the person invited to this workspace.
+          role:
+            type: string
+            description: The role of the invite to this workspace.
+      plan:
+        additionalProperties: false
+        type: object
+        required:
+          - stripe_price_id
+          - price
+          - interval
+          - name
+          - description
+          - stripe_product_id
+          - address
+        properties:
+          address:
+            type: string
+            description: The address for this plan.
+          stripe_product_id:
+            type: string
+            description: The Stripe product id for this plan.
+          price:
+            type: string
+            description: The formatted price for this plan. Suitable for use within HX contexts.
+          name:
+            type: string
+            description: The name of this plan. Suitable for use within HX contexts.
+          feature_list:
+            type: array
+            description: An optional list of features for this plan. Suitable for use within HX contexts.
+            items:
+              type: string
+          description:
+            type: string
+            description: The description of this plan. Suitable for use within HX contexts.
+          interval:
+            type: string
+            description: The subscription interval for this plan. Suitable for use within HX contexts.
+          stripe_price_id:
+            type: string
+            description: The Stripe price id for this plan.
+      workspace-account:
+        additionalProperties: false
+        type: object
+        required:
+          - role
+          - address
+        properties:
+          role:
+            type: string
+            description: The role of this account in this workspace.
+          address:
+            type: string
+            description: The address of this account.
+      account:
+        additionalProperties: false
+        type: object
+        required:
+          - address
+          - name
+          - email
+        properties:
+          name:
+            type: string
+            description: The name for this account. Suitable for use within HX contexts.
+          email:
+            type: string
+            format: email
+            description: The email for this account.
+          address:
+            type: string
+            description: The address for this account.
+    resources:
+      webhook-stripe:
+        template: /webhooks/stripe
+        methods:
+          post:
+            request:
+              content-type:
+                - application/json
+            response:
+              status:
+                - 200
+      workspace-invite:
+        template: /workspaces/{workspace}/invites/{email}
+        methods:
+          delete:
+            response:
+              status:
+                - 204
+          put:
+            request:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - email
+                  - role
+                  - sender
+                properties:
+                  sender:
+                    type: string
+                    format: email
+                    description: The email of the account that sent this invite.
+                  email:
+                    type: string
+                    format: email
+                    description: The email of the person invited to this workspace.
+                  role:
+                    type: string
+                    description: The role of the invite to this workspace.
+              content-type:
+                - application/json
+            response:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - email
+                  - role
+                  - sender
+                properties:
+                  sender:
+                    type: string
+                    format: email
+                    description: The email of the account that sent this invite.
+                  email:
+                    type: string
+                    format: email
+                    description: The email of the person invited to this workspace.
+                  role:
+                    type: string
+                    description: The role of the invite to this workspace.
+              content-type:
+                - application/json
+              status:
+                - 200
+          get:
+            response:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - email
+                  - role
+                  - sender
+                properties:
+                  sender:
+                    type: string
+                    format: email
+                    description: The email of the account that sent this invite.
+                  email:
+                    type: string
+                    format: email
+                    description: The email of the person invited to this workspace.
+                  role:
+                    type: string
+                    description: The role of the invite to this workspace.
+              content-type:
+                - application/json
+              status:
+                - 200
+      product:
+        template: /products/{product}
+        methods:
+          get:
+            response:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - plans
+                  - byname
+                properties:
+                  byname:
+                    type: string
+                    description: The byname of this product.
+                  plans:
+                    type: array
+                    description: A list of plan addresses for this product.
+                    items:
+                      type: string
+              content-type:
+                - application/json
+              status:
+                - 200
+      subscriptions:
+        template: /workspaces/{workspace}/subscriptions
+        methods:
+          get:
+            response:
+              schema:
+                type: array
+                items:
+                  additionalProperties: false
+                  type: object
+                  required:
+                    - product
+                    - plan
+                    - status
+                    - workspace
+                    - stripe_id
+                    - metadata
+                    - address
+                    - cancel_at_period_end
+                    - current_period_end
+                  properties:
+                    product:
+                      type: string
+                      description: The byname of the product for this subscription.
+                    workspace:
+                      type: string
+                      description: The address of the workspace this subscription belongs to.
+                    metadata:
+                      type: object
+                      description: The metadata of this subscription.
+                    address:
+                      description: The address of this subscription.
+                    cancel_at_period_end:
+                      type: boolean
+                      description: A flag that indicates whether this subscription is set to cancel at the end of the billing period.
+                    current_period_end:
+                      type: integer
+                      description: The end of the current billing period, given as a UNIX timestamp.
+                    plan:
+                      type: string
+                      description: The address of the plan for this subscription.
+                    stripe_id:
+                      type: string
+                      description: The Stripe id for this subscription.
+                    status:
+                      type: string
+                      description: The status of this subscription.
+              content-type:
+                - application/json
+              status:
+                - 200
+      workspace:
+        template: /workspaces/{workspace}
+        methods:
+          delete:
+            response:
+              status:
+                - 204
+          put:
+            request:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - address
+                  - name
+                properties:
+                  name:
+                    type: string
+                    description: The name for this workspace. Suitable for use withing HX contexts.
+                  stripe_customer_id:
+                    type: string
+                    description: An optional Stripe customer id for this workspace.
+                  address:
+                    type: string
+                    description: The address for this workspace.
+              content-type:
+                - application/json
+            response:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - address
+                  - name
+                properties:
+                  name:
+                    type: string
+                    description: The name for this workspace. Suitable for use withing HX contexts.
+                  stripe_customer_id:
+                    type: string
+                    description: An optional Stripe customer id for this workspace.
+                  address:
+                    type: string
+                    description: The address for this workspace.
+              content-type:
+                - application/json
+              status:
+                - 200
+          get:
+            response:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - address
+                  - name
+                properties:
+                  name:
+                    type: string
+                    description: The name for this workspace. Suitable for use withing HX contexts.
+                  stripe_customer_id:
+                    type: string
+                    description: An optional Stripe customer id for this workspace.
+                  address:
+                    type: string
+                    description: The address for this workspace.
+              content-type:
+                - application/json
+              status:
+                - 200
+      workspace-invite-accept:
+        template: /workspaces/{workspace}/invites/{account}/accept
+        methods:
+          post:
+            response:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - role
+                  - address
+                properties:
+                  role:
+                    type: string
+                    description: The role of this account in this workspace.
+                  address:
+                    type: string
+                    description: The address of this account.
+              content-type:
+                - application/json
+              status:
+                - 201
+      description:
+        template: /
+        methods:
+          get:
+            response:
+              content-type:
+                - application/json
+                - text/html
+              status:
+                - 200
+      subscription:
+        template: /workspaces/{workspace}/subscriptions/{product}
+        methods:
+          get:
+            response:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - product
+                  - plan
+                  - status
+                  - workspace
+                  - stripe_id
+                  - metadata
+                  - address
+                  - cancel_at_period_end
+                  - current_period_end
+                properties:
+                  product:
+                    type: string
+                    description: The byname of the product for this subscription.
+                  workspace:
+                    type: string
+                    description: The address of the workspace this subscription belongs to.
+                  metadata:
+                    type: object
+                    description: The metadata of this subscription.
+                  address:
+                    description: The address of this subscription.
+                  cancel_at_period_end:
+                    type: boolean
+                    description: A flag that indicates whether this subscription is set to cancel at the end of the billing period.
+                  current_period_end:
+                    type: integer
+                    description: The end of the current billing period, given as a UNIX timestamp.
+                  plan:
+                    type: string
+                    description: The address of the plan for this subscription.
+                  stripe_id:
+                    type: string
+                    description: The Stripe id for this subscription.
+                  status:
+                    type: string
+                    description: The status of this subscription.
+              content-type:
+                - application/json
+              status:
+                - 200
+                - 404
+      workspace-accounts:
+        template: /workspaces/{workspace}/accounts
+        methods:
+          get:
+            response:
+              schema:
+                type: array
+                items:
+                  additionalProperties: false
+                  type: object
+                  required:
+                    - role
+                    - address
+                  properties:
+                    role:
+                      type: string
+                      description: The role of this account in this workspace.
+                    address:
+                      type: string
+                      description: The address of this account.
+              content-type:
+                - application/json
+              status:
+                - 200
+      billing:
+        template: /pages/{workspace}/billing
+        methods:
+          post:
+            response:
+              content-type:
+                - text/plain
+              status:
+                - 200
+      products:
+        template: /products
+        methods:
+          get:
+            response:
+              schema:
+                type: array
+                description: A list of all the product bynames.
+                items:
+                  type: string
+              content-type:
+                - application/json
+              status:
+                - 200
+      feedback:
+        template: /{account}/feedback
+        methods:
+          post:
+            request:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - feedback
+                properties:
+                  feedback:
+                    type: string
+                    description: The feedback this account is submitting.
+              content-type:
+                - application/json
+            response:
+              status:
+                - 204
+      account-workspace-invites:
+        template: /accounts/{account}/workspaces/invites
+        methods:
+          get:
+            response:
+              schema:
+                type: array
+                description: A list of workspace addresses this account is invited to.
+                items:
+                  type: string
+              content-type:
+                - application/json
+              status:
+                - 200
+      accounts:
+        template: /accounts
+        methods:
+          post:
+            request:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - name
+                  - email
+                properties:
+                  name:
+                    type: string
+                    description: The name for this account. Suitable for use within HX contexts.
+                  email:
+                    type: string
+                    format: email
+                    description: The email for this account.
+              content-type:
+                - application/json
+            response:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - address
+                  - name
+                  - email
+                properties:
+                  name:
+                    type: string
+                    description: The name for this account. Suitable for use within HX contexts.
+                  email:
+                    type: string
+                    format: email
+                    description: The email for this account.
+                  address:
+                    type: string
+                    description: The address for this account.
+              content-type:
+                - application/json
+              status:
+                - 201
+      subscription-metadata:
+        template: /workspaces/{workspace}/subscriptions/{product}/metadata
+        methods:
+          delete:
+            response:
+              status:
+                - 204
+          put:
+            request:
+              schema:
+                type: object
+              content-type:
+                - application/json
+            response:
+              schema:
+                type: object
+              content-type:
+                - application/json
+              status:
+                - 200
+          get:
+            response:
+              schema:
+                type: object
+              content-type:
+                - application/json
+              status:
+                - 200
+      workspace-invites:
+        template: /workspaces/{workspace}/invites
+        methods:
+          post:
+            request:
+              schema:
+                type: array
+                items:
+                  additionalProperties: false
+                  type: object
+                  required:
+                    - email
+                    - role
+                    - sender
+                  properties:
+                    sender:
+                      type: string
+                      format: email
+                      description: The email of the account that sent this invite.
+                    email:
+                      type: string
+                      format: email
+                      description: The email of the person invited to this workspace.
+                    role:
+                      type: string
+                      description: The role of the invite to this workspace.
+              content-type:
+                - application/json
+            response:
+              schema:
+                type: array
+                items:
+                  additionalProperties: false
+                  type: object
+                  required:
+                    - email
+                    - role
+                    - sender
+                  properties:
+                    sender:
+                      type: string
+                      format: email
+                      description: The email of the account that sent this invite.
+                    email:
+                      type: string
+                      format: email
+                      description: The email of the person invited to this workspace.
+                    role:
+                      type: string
+                      description: The role of the invite to this workspace.
+              content-type:
+                - application/json
+              status:
+                - 201
+          get:
+            response:
+              schema:
+                type: array
+                items:
+                  additionalProperties: false
+                  type: object
+                  required:
+                    - email
+                    - role
+                    - sender
+                  properties:
+                    sender:
+                      type: string
+                      format: email
+                      description: The email of the account that sent this invite.
+                    email:
+                      type: string
+                      format: email
+                      description: The email of the person invited to this workspace.
+                    role:
+                      type: string
+                      description: The role of the invite to this workspace.
+              content-type:
+                - application/json
+              status:
+                - 200
+      account-workspaces:
+        template: /accounts/{account}/workspaces?{role?}
+        methods:
+          post:
+            request:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - name
+                properties:
+                  name:
+                    type: string
+                    description: The name for this workspace.
+              content-type:
+                - application/json
+            response:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - address
+                  - name
+                properties:
+                  name:
+                    type: string
+                    description: The name for this workspace. Suitable for use withing HX contexts.
+                  stripe_customer_id:
+                    type: string
+                    description: An optional Stripe customer id for this workspace.
+                  address:
+                    type: string
+                    description: The address for this workspace.
+              content-type:
+                - application/json
+              status:
+                - 201
+          get:
+            response:
+              schema:
+                type: array
+                description: A list of workspace addresses.
+                items:
+                  type: string
+              content-type:
+                - application/json
+              status:
+                - 200
+      account-query:
+        template: /accounts-query?{email}
+        methods:
+          get:
+            response:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - address
+                  - name
+                  - email
+                properties:
+                  name:
+                    type: string
+                    description: The name for this account. Suitable for use within HX contexts.
+                  email:
+                    type: string
+                    format: email
+                    description: The email for this account.
+                  address:
+                    type: string
+                    description: The address for this account.
+              content-type:
+                - application/json
+              status:
+                - 200
+                - 404
+      checkout:
+        template: /pages/{workspace}/checkout
+        methods:
+          post:
+            request:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - prices
+                properties:
+                  trial_require_card:
+                    type: boolean
+                    description: An optional flag that sets whether a credit card is required for trials.
+                  trial_period_days:
+                    type: integer
+                    description: An optional trial period for the checkout session.
+                  prices:
+                    type: array
+                    description: The Stripe price ids for this checkout session.
+                    items:
+                      type: string
+                  cancel_url:
+                    type: string
+                    format: uri
+                    description: An optional url to redirect to when a checkout session is cancelled.
+                  success_url:
+                    type: string
+                    format: uri
+                    description: An optional url to redirect to when a checkout session is successful.
+              content-type:
+                - application/json
+            response:
+              content-type:
+                - text/plain
+              status:
+                - 200
+      plan:
+        template: /plans/{plan}
+        methods:
+          get:
+            response:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - stripe_price_id
+                  - price
+                  - interval
+                  - name
+                  - description
+                  - stripe_product_id
+                  - address
+                properties:
+                  address:
+                    type: string
+                    description: The address for this plan.
+                  stripe_product_id:
+                    type: string
+                    description: The Stripe product id for this plan.
+                  price:
+                    type: string
+                    description: The formatted price for this plan. Suitable for use within HX contexts.
+                  name:
+                    type: string
+                    description: The name of this plan. Suitable for use within HX contexts.
+                  feature_list:
+                    type: array
+                    description: An optional list of features for this plan. Suitable for use within HX contexts.
+                    items:
+                      type: string
+                  description:
+                    type: string
+                    description: The description of this plan. Suitable for use within HX contexts.
+                  interval:
+                    type: string
+                    description: The subscription interval for this plan. Suitable for use within HX contexts.
+                  stripe_price_id:
+                    type: string
+                    description: The Stripe price id for this plan.
+              content-type:
+                - application/json
+              status:
+                - 200
+      workspace-account:
+        template: /workspaces/{workspace}/accounts/{account}
+        methods:
+          delete:
+            response:
+              status:
+                - 204
+          put:
+            request:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - role
+                  - address
+                properties:
+                  role:
+                    type: string
+                    description: The role of this account in this workspace.
+                  address:
+                    type: string
+                    description: The address of this account.
+              content-type:
+                - application/json
+            response:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - role
+                  - address
+                properties:
+                  role:
+                    type: string
+                    description: The role of this account in this workspace.
+                  address:
+                    type: string
+                    description: The address of this account.
+              content-type:
+                - application/json
+              status:
+                - 200
+          get:
+            response:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - role
+                  - address
+                properties:
+                  role:
+                    type: string
+                    description: The role of this account in this workspace.
+                  address:
+                    type: string
+                    description: The address of this account.
+              content-type:
+                - application/json
+              status:
+                - 200
+      account-workspace-leave:
+        template: /accounts/{account}/workspaces/{workspace}/leave
+        methods:
+          post:
+            response:
+              status:
+                - 204
+      account:
+        template: /accounts/{account}
+        methods:
+          delete:
+            response:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - address
+                  - name
+                  - email
+                properties:
+                  name:
+                    type: string
+                    description: The name for this account. Suitable for use within HX contexts.
+                  email:
+                    type: string
+                    format: email
+                    description: The email for this account.
+                  address:
+                    type: string
+                    description: The address for this account.
+              content-type:
+                - application/json
+              status:
+                - 200
+          put:
+            request:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - address
+                  - name
+                  - email
+                properties:
+                  name:
+                    type: string
+                    description: The name for this account. Suitable for use within HX contexts.
+                  email:
+                    type: string
+                    format: email
+                    description: The email for this account.
+                  address:
+                    type: string
+                    description: The address for this account.
+              content-type:
+                - application/json
+            response:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - address
+                  - name
+                  - email
+                properties:
+                  name:
+                    type: string
+                    description: The name for this account. Suitable for use within HX contexts.
+                  email:
+                    type: string
+                    format: email
+                    description: The email for this account.
+                  address:
+                    type: string
+                    description: The address for this account.
+              content-type:
+                - application/json
+              status:
+                - 200
+          get:
+            response:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                  - address
+                  - name
+                  - email
+                properties:
+                  name:
+                    type: string
+                    description: The name for this account. Suitable for use within HX contexts.
+                  email:
+                    type: string
+                    format: email
+                    description: The email for this account.
+                  address:
+                    type: string
+                    description: The address for this account.
+              content-type:
+                - application/json
+              status:
+                - 200
+  status: 200
