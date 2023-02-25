@@ -19,10 +19,10 @@ do ->
       actual = expand scenarios, data
       assert.deepEqual actual, expected
 
-    # test "nefarious", ->
-    #   data.name = "Bob"
-    #   actual = expand scenarios, data
-    #   assert.notDeepEqual actual, expected
+    test "nefarious", ->
+      data.name = "Bob"
+      actual = expand scenarios, data
+      assert.notDeepEqual actual, expected
 
     test "benchmark", ->
       ms = [
