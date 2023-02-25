@@ -31,9 +31,7 @@ do ->
         Time.benchmark ->
           expand largeData, largeData 
       ] 
-      console.log benchark: ms
-      # assert ms < 15
-      # assert.deepEqual largeData,
-      #   expand largeData, largeData 
+      assert ms[0] < 10
+      assert ms[1] < 10
   ]
 

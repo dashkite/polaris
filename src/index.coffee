@@ -3,12 +3,18 @@ import * as Type from "@dashkite/joy/type"
 import { generic } from "@dashkite/joy/generic"
 import JSONQuery from "json-query"
 
+tokens =
+  escape: "\\"
+  start: "$"
+  open: "{"
+  close: "}"
+
 parseText = ( state, c ) ->
   switch c
-    when "\\"
+    when tokens.escape
       state._mode = "text"
       state.mode = "escape"
-    when "$"
+    when tokens.start
       state.mode = "start"
     else
       state.current += c
@@ -20,10 +26,10 @@ parseEscape = ( state, c ) ->
 
 parseExpression = ( state, c ) ->
   switch c
-    when "\\"
+    when tokens.escape
       state._mode = "expression"
       state.mode = "escape"
-    when "}"
+    when tokens.close
       state.mode = "text"
       state.expressions.push state.current.trim()
       state.current = ""
@@ -32,11 +38,11 @@ parseExpression = ( state, c ) ->
 
 parseStart = ( state, c ) ->
   switch c
-    when "\\"
+    when tokens.escape
       state._mode = "text"
       state.mode = "escape"
       state.current += "$"
-    when "{"
+    when tokens.open
       state.mode = "expression"
       state.blocks.push state.current
       state.current = ""
