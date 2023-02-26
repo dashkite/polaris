@@ -3,89 +3,201 @@ import * as Type from "@dashkite/joy/type"
 import { generic } from "@dashkite/joy/generic"
 import JSONQuery from "json-query"
 
+pipe = ( fx ) ->
+  switch fx.length
+    when 1 then -> fx[0].apply null, arguments
+    when 2 then -> fx[1] fx[0].apply null, arguments
+    when 3 then -> fx[2] fx[1] fx[0].apply null, arguments
+    when 4 then -> fx[3] fx[2] fx[1] fx[0].apply null, arguments
+    when 5 then -> fx[4] fx[3] fx[2] fx[1] fx[0].apply null, arguments
+    else ( args... ) ->
+      for f in fx
+        args = [ f.apply null, args ]       
+      args[0]
+
+skip = ( input, state ) -> state
+
+push = ( mode ) ->
+  ( state ) ->
+    state.mode.push mode
+    state
+
+pop = ( state ) ->
+  state.mode.pop()
+  state
+
+poke = ( mode ) ->
+  ( state ) ->
+    state.mode.pop()
+    state.mode.push mode
+    state
+
+trim = ( state ) ->
+  state.current = state.current.trim()
+  state
+
+save = ( name ) ->
+  (state ) ->
+    ( state.data[ name ] ?= [] ).push state.current
+    state
+
+clear = ( state ) ->
+  state.current = ""
+  state
+
+append = ( c, state ) ->
+  state.current += c
+  state
+
+appendText = ( text ) ->
+  ( state ) ->
+    state.current += text
+    state
+
+prefix = ( text, f ) ->
+  ( c, state ) -> f "#{text}#{c}", state
+
 tokens =
   escape: "\\"
   start: "$"
   open: "{"
   close: "}"
 
-parseText = ( state, c ) ->
-  switch c
-    when tokens.escape
-      state._mode = "text"
-      state.mode = "escape"
-    when tokens.start
-      state.mode = "start"
+rules =
+
+  text:
+    default: append
+    [ tokens.escape ]: pipe [ skip, push "escape" ]
+    [ tokens.start ]: pipe [ skip, push "start" ]
+    end: pipe [
+      skip
+      save "text"
+      ( state ) ->
+        { text, expressions } = state.data
+        text ?= []
+        expressions ?= []
+        j = Math.max text.length, expressions.length
+        for i in [0...j]
+          [ text[ i ], expressions[ i ] ]
+    ]
+
+  escape:
+    default: pipe [ append, pop ]
+
+  expression:
+    default: append
+    [ tokens.escape ]: pipe [ skip, push "escape" ]
+    [ tokens.close ]: pipe [
+      skip
+      pop
+      trim
+      save "expressions"
+      clear
+    ]
+
+  start:
+
+    default: pipe [
+      prefix "$", append
+      pop
+    ]
+
+    [ tokens.escape ]: pipe [
+      skip
+      appendText "$"
+      push "escape"
+    ]
+
+    [ tokens.open ]: pipe [
+      skip
+      poke "expression"
+      save "text"
+      clear
+    ]
+
+
+getContext = ( state ) ->
+  i = state.index
+  state.text[( i - 5)..( i + 5 )]
+
+getMode = ( state ) ->
+  state.mode[ state.mode.length - 1 ]
+
+getExpected = ( state ) ->
+  mode = getMode state
+  ( Object.keys state.rules[ mode ] ).join ", "
+
+isFinished = ( start, state ) ->
+  state.mode.length == 1 && state.mode[0] == start  
+
+run = ( input, state ) ->
+  mode = getMode state
+  if ( group = rules[ mode ] )?
+    if ( rule = ( group[ input ] ? group.default ) )?
+      rule input, state
     else
-      state.current += c
+      expected = getExpected state
+      context = getContext state
+      throw new Error "parse error at '#{ context }'.
+        Expected one of: [ #{ expected } ], got: '#{ input }'"
+  else
+    throw new Error "parser in an unknown state: #{ mode }"
 
-parseEscape = ( state, c ) ->
-  state.current += c
-  state.mode = state._mode
-  state._mode = undefined
+class LRUCache
+  
+  constructor: ( @cache = new Map, @max = 1e6 ) ->
 
-parseExpression = ( state, c ) ->
-  switch c
-    when tokens.escape
-      state._mode = "expression"
-      state.mode = "escape"
-    when tokens.close
-      state.mode = "text"
-      state.expressions.push state.current.trim()
-      state.current = ""
-    else
-      state.current += c
+  keys: -> Array.from @cache.keys()
 
-parseStart = ( state, c ) ->
-  switch c
-    when tokens.escape
-      state._mode = "text"
-      state.mode = "escape"
-      state.current += "$"
-    when tokens.open
-      state.mode = "expression"
-      state.blocks.push state.current
-      state.current = ""
-    else
-      state.mode = "text"
-      state.current += "$#{c}"
+  get: ( key ) ->
+    if ( result = @cache.get key )?
+      # refresh key
+      @cache.delete key
+      @cache.set key, result
+      result
+  
+  set: ( key, value ) ->
+    # refresh key
+    if ( @cache.get key )?
+      @cache.delete key
+    else if @cache.size == @max
+      @cache.delete @keys()[0]
+    @cache.set key, value
 
-parse = ( text ) ->
+memoize = ( f ) ->
+  do ( cache = new LRUCache ) ->
+    ( input ) ->
+      if ( result = cache.get input )?
+        result
+      else
+        result = f input
+        cache.set input, result
+        result
 
-  # initalize parser state
-  state =
-    mode: "text"
-    blocks: []
-    expressions: []
-    current: ""
+make = ( rules, start ) ->
+  memoize ( text ) ->
+    state =
+      mode: [ start ]
+      data: {}
+      current: ""
+      text: text
+      rules: rules
+    try
+      for c, i in text
+        state.index = i
+        run c, state
+      if isFinished start, state
+        run "end", state
+      else
+        mode = getMode state
+        throw new Error "unexpected end of input while parsing [ #{ mode } ]"
+    catch error
+      context = getContext state
+      console.error "unexpected parse error at '#{ context }' on: [ #{ input } ]."
+      throw error
 
-  # parse each character
-  for c in text
-    switch state.mode
-      when "text"
-        parseText state, c
-      when "escape"
-        parseEscape state, c
-      when "expression"
-        parseExpression state, c
-      when "start"
-        parseStart state, c
+parse = make rules, "text"
 
-  # return result
-  if state.mode == "text"
-    # push the final block unless it's empty
-    if state.current != ""
-      state.blocks.push state.current
-    for block, i in state.blocks
-      if ( expression = state.expressions[ i ] )?
-        [ block, state.expressions[ i ] ]
-      # there's no corresponding expression 
-      # so this is just the closing block
-      else [ block ]
-  # there was a parse error so we just assume this wasn't
-  # an polaris template - maybe we should throw?
-  else [ text ]
-    
 query = ( expression, data ) ->
   ( JSONQuery expression, { data } )?.value
 
@@ -115,15 +227,15 @@ generic expand, Type.isArray, Type.isObject, ( array, context ) ->
 generic expand, Type.isString, Type.isObject, ( text, context ) -> 
   
   result = undefined
-  
-  for [ block, expression ] in parse text
 
-    block = if block != "" then block
+  for [ text, expression ] in parse text
+
+    text = if text != "" then text
 
     value = if expression?
       query expression, context
     
-    result = cat result, cat block, value
+    result = cat result, cat text, value
 
   result ? ""
 
