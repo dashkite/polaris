@@ -25,11 +25,10 @@ generic expand, Type.isArray, Type.isObject, ( array, context ) ->
 generic expand, Type.isString, Type.isObject, ( text, context ) -> 
   result = undefined
   for { text, expression } in scan text
-    result = if text? && text != ""
-      cat result, text
+    if text? && text != ""
+      result = cat result, text
     else if expression?
-      cat result, query expression, context
-    else result
+      result = cat result, query expression, context
   result ? ""
 
 export { expand, scan, query }
