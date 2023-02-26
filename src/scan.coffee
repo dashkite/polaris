@@ -6,6 +6,7 @@ import {
   skip
   prefix
   append
+  tag
   save
   clear
   make
@@ -13,13 +14,10 @@ import {
 } from "@dashkite/scan"
 
 finish = ( state ) ->
-  { text, expressions } = state.data
-  text ?= []
-  expressions ?= []
-  j = Math.max text.length, expressions.length
-  for i in [0...j]
-    [ text[ i ], expressions[ i ] ]
+  { tokens } = state.data
+  tokens
 
+# tokens
 $ =
   escape: "\\"
   start: "$"
@@ -29,26 +27,36 @@ $ =
 rules =
 
   text:
+  
     default: append
-    [ $.escape ]: pipe [ skip, push "escape" ]
-    [ $.start ]: pipe [ skip, push "start" ]
+  
     end: pipe [
       skip
-      save "text"
+      tag "text"
+      save "tokens"
       finish
     ]
 
+    [ $.escape ]: pipe [ skip, push "escape" ]
+  
+    [ $.start ]: pipe [ skip, push "start" ]
+  
   escape:
+  
     default: pipe [ append, pop ]
 
   expression:
+
     default: append
+  
     [ $.escape ]: pipe [ skip, push "escape" ]
+  
     [ $.close ]: pipe [
       skip
       pop
       trim
-      save "expressions"
+      tag "expression"
+      save "tokens"
       clear
     ]
 
@@ -68,7 +76,8 @@ rules =
     [ $.open ]: pipe [
       skip
       poke "expression"
-      save "text"
+      tag "text"
+      save "tokens"
       clear
     ]
 

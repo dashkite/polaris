@@ -13,6 +13,7 @@ expand = generic
   name: "expand"
   default: Fn.identity
 
+# helper for reduce used in expand for object
 collate = ( context ) ->
   ( result, [ key, value ]) ->
     result[ key ] = expand value, context
@@ -29,14 +30,12 @@ generic expand, Type.isString, Type.isObject, ( text, context ) ->
   
   result = undefined
 
-  for [ text, expression ] in scan text
-
-    text = if text != "" then text
-
-    value = if expression?
-      query expression, context
-    
-    result = cat result, cat text, value
+  for { text, expression } in scan text
+    if text? && text != ""
+      result = cat result, text
+    else if expression?
+      result = cat result,
+        query expression, context
 
   result ? ""
 
