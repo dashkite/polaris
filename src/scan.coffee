@@ -24,7 +24,7 @@ $ =
   open: "{"
   close: "}"
 
-rules =
+scan = make "text",
 
   text:
   
@@ -80,7 +80,5 @@ rules =
       save "tokens"
       clear
     ]
-
-scan = make rules, "text"
 
 export { scan }
