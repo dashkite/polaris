@@ -6,7 +6,6 @@ import {
   skip
   prefix
   append
-  appendText
   save
   clear
   make
@@ -62,7 +61,7 @@ rules =
 
     [ $.escape ]: pipe [
       skip
-      appendText "$"
+      append "$"
       push "escape"
     ]
 
