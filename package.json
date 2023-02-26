@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@dashkite/joy": "^0.3.16",
-    "@dashkite/parse": "link:../parse",
+    "@dashkite/scan": "link:../scan",
     "json-query": "^2.2.2"
   }
 }

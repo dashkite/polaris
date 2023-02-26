@@ -8,12 +8,12 @@ specifiers:
   '@dashkite/genie-modules': link:../genie-modules
   '@dashkite/genie-presets': ^0.6.2
   '@dashkite/joy': ^0.3.16
-  '@dashkite/parse': link:../parse
+  '@dashkite/scan': link:../scan
   json-query: ^2.2.2
 
 dependencies:
   '@dashkite/joy': 0.3.16
-  '@dashkite/parse': link:../parse
+  '@dashkite/scan': link:../scan
   json-query: 2.2.2
 
 devDependencies:
