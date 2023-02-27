@@ -19,6 +19,11 @@ do ->
       actual = expand scenarios, data
       assert.deepEqual actual, expected
 
+    # I can't test for this as a scenario because JS YAML
+    # doesn't support undefined
+    test "bad input returns undefined", ->
+      assert !( expand "${ foo }", undefined )?
+
     test "nefarious", ->
       data.name = "Bob"
       actual = expand scenarios, data
