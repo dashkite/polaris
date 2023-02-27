@@ -11,7 +11,7 @@ import {
 
 expand = generic 
   name: "expand"
-  default: Fn.identity
+  default: -> undefined
 
 generic expand, Type.isObject, Type.isObject, ( object, context ) ->
   result = {}

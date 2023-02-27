@@ -17,7 +17,6 @@ do ->
 
     test "scenarios", ->
       actual = expand scenarios, data
-      # console.log actual
       assert.deepEqual actual, expected
 
     test "nefarious", ->

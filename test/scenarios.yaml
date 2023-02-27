@@ -6,5 +6,6 @@
 - greeting:
     morning: Good morning, ${ name }
 - ""
-- ~
+# don't have a way to represent undefined
+# - ~
 - ${ nested[**].property }
