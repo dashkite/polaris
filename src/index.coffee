@@ -11,7 +11,7 @@ import {
 
 expand = generic 
   name: "expand"
-  default: -> undefined
+  default: Fn.identity
 
 generic expand, Type.isObject, Type.isObject, ( object, context ) ->
   result = {}
@@ -29,6 +29,6 @@ generic expand, Type.isString, Type.isObject, ( text, context ) ->
       result = cat result, text
     else if expression?
       result = cat result, query expression, context
-  result ? ""
+  result
 
 export { expand, scan, query }
