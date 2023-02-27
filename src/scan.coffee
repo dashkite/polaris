@@ -32,6 +32,7 @@ scan = make "text",
   
     end: pipe [
       skip
+      pop
       tag "text"
       save "tokens"
       finish
