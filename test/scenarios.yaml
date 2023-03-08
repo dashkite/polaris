@@ -6,3 +6,4 @@
 - greeting:
     morning: Good morning, ${ name }
 - ${ nested[**].property }
+- true

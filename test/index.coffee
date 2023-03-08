@@ -21,8 +21,11 @@ do ->
 
     # I can't test for this as a scenario because JS YAML
     # doesn't support undefined
-    # test "bad input returns undefined", ->
-    #   assert !( expand "${ foo }", undefined )?
+    test "undefined", ->
+      assert.equal undefined, expand "${ foo }", {}
+      assert.equal undefined, expand "", {}
+      assert.equal "${ foo }", expand "${ foo }", undefined
+      assert.equal "", expand "", undefined
 
     test "nefarious", ->
       data.name = "Bob"
