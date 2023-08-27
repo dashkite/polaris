@@ -29,8 +29,10 @@
     "@dashkite/amen-console": "^0.0.1",
     "@dashkite/assert": "^0.1.3",
     "@dashkite/genie": "^0.5.11",
+    "@dashkite/genie-files": "link:../genie-files",
     "@dashkite/genie-modules": "link:../genie-modules",
-    "@dashkite/genie-presets": "^0.6.2"
+    "@dashkite/genie-presets": "link:../genie-presets",
+    "@dashkite/masonry": "link:../masonry"
   },
   "dependencies": {
     "@dashkite/joy": "^0.3.16",
