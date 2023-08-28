@@ -26,7 +26,7 @@ devDependencies:
     specifier: ^0.1.3
     version: 0.1.4
   '@dashkite/genie':
-    specifier: ^0.5.11
+    specifier: link:../genie
     version: 0.5.11
   '@dashkite/genie-files':
     specifier: link:../genie-files
