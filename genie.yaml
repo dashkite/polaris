@@ -9,15 +9,6 @@ presets:
         - preset: browser
           glob:
             - src/**/*.coffee
-      #   - preset: browser
-      #     glob:
-      #       - test/client/**/*.coffee
-      #     options:
-      #       mode: debug
-      #   - preset: node
-      #     glob:
-      #       - test/**/*.coffee
-      #       - '!test/client/**/*.coffee'
       node:
         - preset: node
           glob:

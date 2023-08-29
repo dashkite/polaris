@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# don't watch test because we write to the test output directory
+# TODO don't write to the test output directory
+fswatch -0 src | xargs -0 -n 1 scripts/test
