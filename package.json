@@ -33,8 +33,7 @@
     "@dashkite/genie": "link:../genie",
     "@dashkite/genie-files": "link:../genie-files",
     "@dashkite/genie-modules": "link:../genie-modules",
-    "@dashkite/genie-presets": "link:../genie-presets",
-    "@dashkite/masonry": "link:../masonry"
+    "@dashkite/genie-presets": "link:../genie-presets"
   },
   "dependencies": {
     "@dashkite/joy": "^0.3.16",

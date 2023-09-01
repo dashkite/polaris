@@ -43,9 +43,6 @@ devDependencies:
   '@dashkite/genie-presets':
     specifier: link:../genie-presets
     version: 0.7.0
-  '@dashkite/masonry':
-    specifier: link:../masonry
-    version: link:../masonry
 
 packages:
 
