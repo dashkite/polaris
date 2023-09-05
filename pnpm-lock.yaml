@@ -40,9 +40,6 @@ devDependencies:
   '@dashkite/genie-modules':
     specifier: link:../genie-modules
     version: link:../genie-modules
-  '@dashkite/genie-presets':
-    specifier: link:../genie-presets
-    version: link:../genie-presets
 
 packages:
 
