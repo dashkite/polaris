@@ -25,14 +25,12 @@
   },
   "homepage": "https://github.com/dashkite/polaris#readme",
   "devDependencies": {
-    "@babel/core": "^7.22.11",
-    "@babel/preset-env": "^7.22.10",
     "@dashkite/amen": "^0.1.2",
     "@dashkite/amen-console": "^0.0.1",
     "@dashkite/assert": "^0.1.3",
     "@dashkite/genie": "link:../genie",
-    "@dashkite/genie-files": "link:../genie-files",
-    "@dashkite/genie-modules": "link:../genie-modules"
+    "@dashkite/genie-coffee": "link:../genie-coffee",
+    "@dashkite/genie-yaml": "link:../genie-yaml"
   },
   "dependencies": {
     "@dashkite/joy": "^0.3.16",
