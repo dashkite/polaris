@@ -15,9 +15,14 @@ do ->
 
   print await test "@dashkite/polaris", [
 
-    test "scenarios", ->
-      actual = expand scenarios, data
-      assert.deepEqual actual, expected
+    test "scenarios", do ->
+      for scenario in scenarios
+        do ({ name, input, expect } = scenario ) ->
+          name ?= input
+          test name, ->
+            assert.deepEqual expect,
+              expand input, data
+      
 
     # I can't test for this as a scenario because JS YAML
     # doesn't support undefined
@@ -39,7 +44,7 @@ do ->
         Time.benchmark ->
           expand largeData, largeData 
       ] 
-      console.log benchmark: ms
+      # console.log benchmark: ms
       assert ms[0] < 10
       assert ms[1] < 10
   ]

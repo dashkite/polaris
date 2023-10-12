@@ -7,3 +7,4 @@ nested:
     - property: bar
   -
     - property: baz
+drn:foo/bar/baz: abcdef123

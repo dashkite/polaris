@@ -1,9 +1,32 @@
-- hello, there
-- ${ name }
-- Hello ${ name }
-- Hello \${ name }
-- ${ greetings[ { name \} ] } ${ name }
-- greeting:
-    morning: Good morning, ${ name }
-- ${ nested[**].property }
-- true
+- input: hello, there
+  expect: hello, there
+
+- input: ${ name }
+  expect: Alice
+  
+- input: Hello ${ name }
+  expect: Hello Alice
+  
+- input: Hello \${ name }
+  expect: Hello ${ name }
+
+- input: ${ greetings[(@root.name)] } ${ name }
+  expect: Hello Alice
+
+- name: object input
+  input:
+    greeting:
+      morning: Good morning, ${ name }
+  expect: 
+    greeting:
+        morning: Good morning, Alice
+
+- input: ${ nested.[*].property }
+  expect: [ foo, bar, baz ]
+
+- input: true
+  expect: true
+  
+- input: ${ drn:foo/bar/baz }
+  expect: abcdef123
+  
