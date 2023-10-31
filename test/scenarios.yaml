@@ -30,3 +30,8 @@
 - input: ${ drn:foo/bar/baz }
   expect: abcdef123
   
+- input: ${ env.drn:foo/bar/baz }
+  expect: ghijkl456
+
+- input: ${ db rune }
+  expect: mnopqr789

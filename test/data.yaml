@@ -8,3 +8,6 @@ nested:
   -
     - property: baz
 drn:foo/bar/baz: abcdef123
+env:
+  drn:foo/bar/baz: ghijkl456
+db rune: mnopqr789
