@@ -1,63 +1,51 @@
-lockfileVersion: '6.0'
+lockfileVersion: 5.4
 
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
+specifiers:
+  '@dashkite/amen': ^0.1.2
+  '@dashkite/amen-console': ^0.0.1
+  '@dashkite/assert': ^0.1.3
+  '@dashkite/genie': link:../genie
+  '@dashkite/genie-coffee': link:../genie-coffee
+  '@dashkite/genie-modules': link:../genie-modules
+  '@dashkite/genie-yaml': link:../genie-yaml
+  '@dashkite/joy': ^0.3.16
+  '@dashkite/scan': link:../scan
+  jsonpath-plus: ^7.2.0
 
 dependencies:
-  '@dashkite/joy':
-    specifier: ^0.3.16
-    version: 0.3.16
-  '@dashkite/scan':
-    specifier: link:../scan
-    version: link:../scan
-  jsonpath-plus:
-    specifier: ^7.2.0
-    version: 7.2.0
+  '@dashkite/joy': 0.3.16
+  '@dashkite/scan': link:../scan
+  jsonpath-plus: 7.2.0
 
 devDependencies:
-  '@dashkite/amen':
-    specifier: ^0.1.2
-    version: 0.1.2
-  '@dashkite/amen-console':
-    specifier: ^0.0.1
-    version: 0.0.1
-  '@dashkite/assert':
-    specifier: ^0.1.3
-    version: 0.1.4
-  '@dashkite/genie':
-    specifier: link:../genie
-    version: link:../genie
-  '@dashkite/genie-coffee':
-    specifier: link:../genie-coffee
-    version: link:../genie-coffee
-  '@dashkite/genie-modules':
-    specifier: link:../genie-modules
-    version: link:../genie-modules
-  '@dashkite/genie-yaml':
-    specifier: link:../genie-yaml
-    version: link:../genie-yaml
+  '@dashkite/amen': 0.1.2
+  '@dashkite/amen-console': 0.0.1
+  '@dashkite/assert': 0.1.4
+  '@dashkite/genie': link:../genie
+  '@dashkite/genie-coffee': link:../genie-coffee
+  '@dashkite/genie-modules': link:../genie-modules
+  '@dashkite/genie-yaml': link:../genie-yaml
 
 packages:
 
-  /@dashkite/amen-console@0.0.1:
+  /@dashkite/amen-console/0.0.1:
     resolution: {integrity: sha512-ZJ0a1vNxqULnXN5e0vCkHVHnmK8XPaUrzGKF77cpCMqnBmO69D/UwzhAmT0lzHXQJ6zXEdTMfExO9LsQt14FiQ==}
     dev: true
 
-  /@dashkite/amen@0.1.2:
+  /@dashkite/amen/0.1.2:
     resolution: {integrity: sha512-lQwxCo97oKnNrH+mNcF/fTi1WFY+YfOHBD31NDkvcu/R6HOtLQa08agyZBRk5kJrOjHYI8kAdOkjjOWw8LEC5g==}
     dev: true
 
-  /@dashkite/assert@0.1.4:
+  /@dashkite/assert/0.1.4:
     resolution: {integrity: sha512-OLOzI/lA+EwCh6znSexGAG1V4bkaT5gU04xl6ApEluv5jICnHhinZ707MObu+jhVVJ9uHDDlG85O+Afn1aTQoQ==}
     dependencies:
       '@dashkite/joy': 0.3.16
     dev: true
 
-  /@dashkite/joy@0.3.16:
+  /@dashkite/joy/0.3.16:
     resolution: {integrity: sha512-dsU0us4j1Pb+zceoBvLbnZ2PbmULkJUtM2vtWLxKmoc1DE4w9SVTiPTe6JWvF0A0vk90ldv+Lc9qEA5x3O+DtQ==}
 
-  /jsonpath-plus@7.2.0:
+  /jsonpath-plus/7.2.0:
     resolution: {integrity: sha512-zBfiUPM5nD0YZSBT/o/fbCUlCcepMIdP0CJZxM1+KgA4f2T206f6VAg9e7mX35+KlMaIc5qXW34f3BnwJ3w+RA==}
     engines: {node: '>=12.0.0'}
     dev: false
