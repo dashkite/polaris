@@ -1,6 +1,3 @@
-# import JSONQuery from "json-query"
-# import JSONPath from "jsonpath"
-# import JSONata from "jsonata"
 import { JSONPath as _query } from "jsonpath-plus"
 
 unwrap = ( value ) ->
