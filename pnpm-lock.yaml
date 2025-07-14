@@ -12,8 +12,8 @@ importers:
         specifier: ^0.3.16
         version: 0.3.16
       '@dashkite/scan':
-        specifier: link:../scan
-        version: link:../scan
+        specifier: 0.2.0
+        version: 0.2.0
       jsonpath-plus:
         specifier: ^7.2.0
         version: 7.2.0
@@ -624,6 +624,9 @@ packages:
   '@dashkite/kaiko@0.3.3':
     resolution: {integrity: sha512-XnAvVr9y2MsDqMLr4A24vkLF7Iuq3E8RjHEEpqhe29P5NevVX9jXKcXUStNMp9MSJbjHd2pqUNiM5Vvdja9ggg==}
 
+  '@dashkite/lru-cache@0.1.0':
+    resolution: {integrity: sha512-bAN6/NxYrorgiKMdh0/f6U6AMdLoBFn9sJUZDD+Od/Fw6O1istAMF2hQugdO3SOeBOUi9dQN+rXMP60dJ/2zOw==}
+
   '@dashkite/masonry-coffee@0.2.0':
     resolution: {integrity: sha512-xJO48SIRpsYbJF32CwpA6yeEJhNh+DtxCucyt4MNJqO0yru9X7hoxZsHneRoUE+kISD0KTO8DLQiHv21nU/V2A==}
 
@@ -647,6 +650,9 @@ packages:
 
   '@dashkite/masonry@0.14.0':
     resolution: {integrity: sha512-5POHf/fpqgFba4Xbrr8oNHIpkKTD1WgFTZMjBZBvluv8YBWzLayAd9l4R0TYy+MybBVFFJ2Tj7v5DlIu6dPgvw==}
+
+  '@dashkite/scan@0.2.0':
+    resolution: {integrity: sha512-Ihzyw90G+RAB7ietzrEZHDivqwsr4HdCm9LSUGKLFERN26RNvXmLp8CEE1OCkucH6ipfmDSF/ga8OVxxp0gGAw==}
 
   '@dashkite/zephyr@0.2.0':
     resolution: {integrity: sha512-l3Fm9nyOIp1yBnv4IzGOKVgo1/UucU5WLvsqAfcP2jEVlE4AgpPkODssyloxTyC3N+bhcz1DXqC/7KokI1eVjA==}
@@ -2176,6 +2182,8 @@ snapshots:
 
   '@dashkite/kaiko@0.3.3': {}
 
+  '@dashkite/lru-cache@0.1.0': {}
+
   '@dashkite/masonry-coffee@0.2.0':
     dependencies:
       '@swc/core': 1.11.7
@@ -2226,6 +2234,10 @@ snapshots:
       fast-glob: 3.3.3
     transitivePeerDependencies:
       - supports-color
+
+  '@dashkite/scan@0.2.0':
+    dependencies:
+      '@dashkite/lru-cache': 0.1.0
 
   '@dashkite/zephyr@0.2.0':
     dependencies:
