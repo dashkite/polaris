@@ -888,8 +888,8 @@ packages:
   '@dashkite/genie-module@0.5.20':
     resolution: {integrity: sha512-tSpaoytpyeqJXIY/6VpX8H9WH5odimBdL60WPwAilCYqe6y2Ha5Z/87LHiETQ9tOzgLOdyC1KSQMKJV69RdpqA==}
 
-  '@dashkite/genie-publish@0.9.13':
-    resolution: {integrity: sha512-PFgeUb25ICIoHzZtCNSdhCIL/hdGPE4+NNbd3dg+yht41Ojqdga9WnuVYNaeBe0/QYJRnbjcIKHnL6zNC5Utww==}
+  '@dashkite/genie-publish@0.9.14':
+    resolution: {integrity: sha512-4EB8WCpIT6jIDhDpbyNlVeA7ftarbp4uhx75s0lKDd7GyVHQlZOnAIgIkBcG2TXJSXC32E3snPRqo28S0cjWxw==}
 
   '@dashkite/genie-release@0.4.3':
     resolution: {integrity: sha512-9qqf7L80jmrRDPw0vhb475ed3hMDPWU782pH0bos4DdjyyObVHZePf26tgaeO9YSaFu4UC/RURxKKh+XmlqOIw==}
@@ -4082,14 +4082,14 @@ snapshots:
     dependencies:
       '@dashkite/drn-sky': 0.8.12(@aws-sdk/credential-provider-node@3.529.0)
       '@dashkite/genie-drn': 0.12.14
-      '@dashkite/genie-publish': 0.9.13(@aws-sdk/credential-provider-node@3.529.0)
+      '@dashkite/genie-publish': 0.9.14(@aws-sdk/credential-provider-node@3.529.0)
     transitivePeerDependencies:
       - '@aws-sdk/credential-provider-node'
       - aws-crt
       - encoding
       - supports-color
 
-  '@dashkite/genie-publish@0.9.13(@aws-sdk/credential-provider-node@3.529.0)':
+  '@dashkite/genie-publish@0.9.14(@aws-sdk/credential-provider-node@3.529.0)':
     dependencies:
       '@dashkite/dolores': 0.8.0(@aws-sdk/credential-provider-node@3.529.0)
       '@dashkite/drn': 0.12.13
