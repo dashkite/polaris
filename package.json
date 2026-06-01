@@ -1,6 +1,6 @@
 {
   "name": "@dashkite/polaris",
-  "version": "0.10.37",
+  "version": "0.10.38",
   "description": "Simple JSON Query-based text interpolation for JavaScript",
   "exports": {
     ".": {
